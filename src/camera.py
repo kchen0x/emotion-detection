@@ -26,8 +26,8 @@ class VideoCamera(object):
         # self.video = cv2.VideoCapture('video.mp4')
 
         # parameters for loading data and images
-        self.detection_model_path = 'trained_models/detection_models/haarcascade_frontalface_default.xml'
-        self.emotion_model_path = 'trained_models/emotion_models/fer2013_mini_XCEPTION.102-0.66.hdf5'
+        self.detection_model_path = os.path.dirname(__file__) + '/../trained_models/detection_models/haarcascade_frontalface_default.xml'
+        self.emotion_model_path = os.path.dirname(__file__) + '/../trained_models/emotion_models/fer2013_mini_XCEPTION.102-0.66.hdf5'
         self.emotion_labels = get_labels('fer2013')
 
         # hyper-parameters for bounding boxes shape
