@@ -952,6 +952,18 @@ def mtFeatureExtractionWithFixedSizeToFile(fileName, mtSize, shortTermSize, shor
             numpy.savetxt(outPutFile+"_st.csv", stF.T, delimiter=",")    # store st features to CSV file
             if PLOT:
                 print "Short-term CSV file: " + outPutFile + "_st.csv saved"
+                
+def mtFeatureExtractionWithFixedSizeAsNumpy(file, mtSize, shortTermSize, shortTermStep):
+    """
+    This function is used as a wrapper to:
+    a) read the content of a WAV file
+    b) perform mid-term feature extraction on that signal
+    c) write the mid-term feature sequences to a numpy file
+    """
+    [Fs, x] = audioBasicIO.convertAudioToNumpyArray(file)           # read the wav file to numpy array
+    x = audioBasicIO.stereo2mono(x)                           # convert to MONO if required
+    [mtF, stF] = mtFeatureExtractionWithFixedSize(x, Fs, mtSize, round(Fs * shortTermSize), round(Fs * shortTermStep))
+    return mtF
 
 def mtFeatureExtractionToFileDir(dirName, midTermSize, midTermStep, shortTermSize, shortTermStep, storeStFeatures=False, storeToCSV=False, PLOT=False):
     types = (dirName + os.sep + '*.wav', )
@@ -970,3 +982,8 @@ def mtFeatureExtractionWithFixedSizeToFileDir(dirName, mtSize, shortTermSize, sh
     for f in filesToProcess:
         outPath = f
         mtFeatureExtractionWithFixedSizeToFile(f, mtSize, shortTermSize, shortTermStep, outPath, storeStFeatures, storeToCSV, PLOT)
+
+# using "audiofile = AudioSegment.from_file(path)" to get a file from path
+def mtFeatureExtractionWithFixedSizeToNumpy(file,mtSize,shortTermSize,shortTermStep)
+    return mtFeatureExtractionWithFixedSizeAsNumpy(file, mtSize, shortTermSize, shortTermStep)
+
